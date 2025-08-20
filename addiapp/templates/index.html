@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Addition Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Background sky */
+        body {
+            background: radial-gradient(circle at top, #1a2a6c, #16222a);
+            position: relative;
+        }
+
+        /* Raindrop style (small glowing spheres) */
+        .raindrop {
+            position: absolute;
+            top: -10px;
+            width: 6px;
+            height: 6px;
+            background: rgba(173, 216, 230, 0.9);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(173, 216, 230, 0.8);
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+            }
+        }
+
+        /* Center form card */
+        .container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .card:hover{
+            background:linear-gradient(180deg, #f6d365 0%, #fda085 100%);
+        }
+
+        .card {
+            background: rgba(233, 203, 127, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0px 4px 20px rgba(0,0,0,0.4);
+            width: 300px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        button {
+            background: #1a2a6c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #16222a;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            margin-top: 15px;
+            color: #1a2a6c;
+        }
+    </style>
+</head>
+<body>
+    <!-- Rain container -->
+    <div id="rain-container"></div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Simple Addition</h2>
+            <form method="POST">
+                {% csrf_token %}
+                {{ rama.as_p }}
+                <button type="submit">Add</button>
+            </form>
+
+            {% if result is not None %}
+                <h3>Result: {{ result }}</h3>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Generate realistic small raindrops
+        const rainContainer = document.getElementById("rain-container");
+        for (let i = 0; i < 150; i++) {
+            const drop = document.createElement("div");
+            drop.classList.add("raindrop");
+            drop.style.left = Math.random() * 100 + "vw";  // random X position
+            drop.style.animationDuration = 2 + Math.random() * 2 + "s"; // fall speed
+            drop.style.animationDelay = Math.random() * 5 + "s"; // stagger start
+            rainContainer.appendChild(drop);
+        }
+    </script>
+</body>
+</html>
